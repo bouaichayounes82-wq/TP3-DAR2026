@@ -193,23 +193,6 @@ Le serveur affiche alors `Client n°X connecté depuis /192.168.1.16:...`. Pour 
 
 ![Test réseau local](screenshots/08-calculatrice-reseau.png)
 
-### 5.5 Démonstration : que se passe-t-il sans `synchronized` ?
-
-Pour vérifier l'utilité de la synchronisation, j'ai retiré `synchronized` de `incrementerCompteur()` en ajoutant une courte pause entre la lecture et l'écriture du compteur :
-
-```java
-private static int incrementerCompteur() {
-    int temp = compteurGlobal;
-    try { Thread.sleep(5); } catch (InterruptedException e) { }
-    compteurGlobal = temp + 1;
-    return compteurGlobal;
-}
-```
-
-Avec les mêmes 5 clients x 100 opérations, le compteur final est **XXX** au lieu de 500 : plusieurs threads lisent la même valeur et s'écrasent mutuellement (**condition de concurrence**). Après avoir remis `synchronized`, le compteur atteint de nouveau exactement 500.
-
-![Sans synchronized](screenshots/09-sans-synchronized.png)
-
 ## 6. Difficultés rencontrées
 
 | Problème | Solution |
